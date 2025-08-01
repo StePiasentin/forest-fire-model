@@ -7,7 +7,7 @@
 // starts the forest with a causal pattern
 void init_grid(int* grid) {
     for(int i = 0; i < WIDTH * HEIGHT; i ++) {
-        grid[i]
+        grid[i] = ((float)rand() / RAND_MAX < TREE_T0_SPAWN_RATE) ? TREE : EMPTY;
     }
 }
 
