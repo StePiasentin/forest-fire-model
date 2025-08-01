@@ -17,7 +17,13 @@
 // converts from 2D to 1D array coordinates
 #define COORDINATES_TO_INDEX(x, y) ((y) * WIDTH + (x))
 
-// checks if forest margins are respected
-#define FOREST_MARGINS_CHECK(x, y) ((x) >= 0 && (x) < WIDTH && (y >= 0) && (y) <= HEIGHT)
+// get single coordinate from index i
+#define GET_X(i) ((i) % WIDTH)
+#define GET_Y(i) ((i) % HEIGHT)
+
+// checks if forest margins are respected in 1D
+#define FOREST_MARGIN_1D_CHECK(i)             \
+    ((GET_X(i)) >= 0 && (GET_X(i)) < WIDTH && \
+     (GET_Y(i)) >= 0 && (GET_Y(i)) < HEIGHT)
 
 #endif

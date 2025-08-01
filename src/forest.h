@@ -5,6 +5,7 @@
 
 void init_grid(int *grid);
 void update_grid(const int *current, int *next);
+int is_neighbor_on_fire(const int *current, int x, int y);
 void render_grid(const int *grid);
 
 #endif
