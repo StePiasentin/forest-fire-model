@@ -1,6 +1,3 @@
-#ifndef FOREST_H
-#define FOREST_H
-
 #include <stdlib.h>
 #include "config.h"
 
@@ -79,5 +76,3 @@ void render_grid(const int *grid);
 
 // frame delay (needed?)
 void post_frame_delay(void);
-
-#endif
