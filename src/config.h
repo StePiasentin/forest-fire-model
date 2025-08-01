@@ -11,7 +11,7 @@
 #define FIRE 2
 
 #define TREE_T0_SPAWN_RATE 0.6   // spawn tree probability at T0 time
-#define TREE_SPAWN_RATE 0.05     // new tree growth probability
+#define TREE_SPAWN_RATE 0.01     // new tree growth probability
 #define FIRE_IGNITION_RATE 0.001 // new fire starting probability
 
 // converts from 2D to 1D array coordinates
