@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "config.h"
 
 // starts the forest with a causal pattern
@@ -53,7 +54,7 @@ void update_grid(const int *current, int *next)
 // checks if neighbor tree is burning
 int is_neighbor_on_fire(const int *current, int current_i, int x_to_check, int y_to_check)
 {
-    if (!FOREST_MARGIN_CHECK(x_to_check, y_to_check))
+    if (!FOREST_MARGIN_1D_CHECK(COORDINATES_TO_INDEX(x_to_check, y_to_check)))
         return 0;
 
     // blocking horizontal wrap-around:
@@ -72,7 +73,44 @@ int is_neighbor_on_fire(const int *current, int current_i, int x_to_check, int y
 }
 
 // grid rendering logic
-void render_grid(const int *grid);
+void render_grid(const int *grid)
+{
+    static HANDLE hConsole = NULL;
+    if (!hConsole)
+        hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    system("cls");
+    printf("\x1b[H"); // Move cursor to top-left
+
+    for (int i = 0; i < WIDTH * HEIGHT; i++)
+    {
+        switch (grid[i])
+        {
+        case EMPTY:
+            SetConsoleTextAttribute(hConsole, 0); // Nero (vuoto)
+            putchar(' ');
+            break;
+
+        case TREE:
+            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Verde brillante
+            putchar('#');
+            break;
+
+        case FIRE:
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY); // Rosso brillante
+            putchar('*');
+            break;
+        }
+
+        if ((i + 1) % WIDTH == 0)
+            putchar('\n');
+    }
+
+    // Reset color a default bianco su nero
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+    fflush(stdout);
+}
 
 // frame delay (needed?)
 void post_frame_delay(void);
