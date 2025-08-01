@@ -1,4 +1,13 @@
+#include <windows.h>
 #include "forest.h"
+
+void enable_vt_mode() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
 
 int main()
 {
@@ -9,11 +18,12 @@ int main()
 
     init_grid(current);
 
-    // WIP ...
+    enable_vt_mode();
 
     while (1)
     {
         render_grid(current);
+        sleep_ms(1);
         update_grid(current, next);
 
         // grids swapping logic
