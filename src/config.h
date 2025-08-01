@@ -19,7 +19,7 @@
 
 // get single coordinate from index i
 #define GET_X(i) ((i) % WIDTH)
-#define GET_Y(i) ((i) % HEIGHT)
+#define GET_Y(i) ((i) / HEIGHT)
 
 // checks if forest margins are respected in 1D
 #define FOREST_MARGIN_1D_CHECK(i)             \
