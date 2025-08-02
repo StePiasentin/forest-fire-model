@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <SDL.h>
 #include "forest.h"
 
 void enable_vt_mode() {
@@ -18,19 +19,31 @@ int main()
 
     init_grid(current);
 
-    enable_vt_mode();
+    SDL_Event e;
+    int quit = 0;
 
-    while (1)
+    while (!quit)
     {
+        // Gestione eventi
+        while (SDL_PollEvent(&e))
+        {
+            if (e.type == SDL_QUIT)
+                quit = 1;
+        }
+
         render_grid(current);
-        sleep_ms(1);
         update_grid(current, next);
 
-        // grids swapping logic
+        // swap
         int *temp = current;
         current = next;
         next = temp;
+
+        SDL_Delay(DELAY); // delay per circa 10 fps
     }
+
+    // Pulizia SDL (se non fatta in render_grid)
+    SDL_Quit();
 
     return 0;
 }
