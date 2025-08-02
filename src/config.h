@@ -2,8 +2,8 @@
 #define CONFIG_H
 
 // forest width and height
-#define WIDTH 120
-#define HEIGHT 120
+#define WIDTH 340
+#define HEIGHT 180
 
 // pixel status
 #define EMPTY 0
@@ -19,23 +19,12 @@
 
 // get single coordinate from index i
 #define GET_X(i) ((i) % WIDTH)
-#define GET_Y(i) ((i) / HEIGHT)
+#define GET_Y(i) ((i) / WIDTH)
 
 // checks if forest margins are respected in 1D
 #define FOREST_MARGIN_1D_CHECK(i)             \
     ((GET_X(i)) >= 0 && (GET_X(i)) < WIDTH && \
      (GET_Y(i)) >= 0 && (GET_Y(i)) < HEIGHT)
-
-// COLORS
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define RESET   "\x1b[0m"
-
-// SYMBOLS
-#define SYMBOL_EMPTY   " "
-#define SYMBOL_TREE    "🌲"
-#define SYMBOL_FIRE    "🔥"
 
 // TIMER
 #ifdef _WIN32
@@ -45,5 +34,10 @@
 #include <unistd.h>
 #define sleep_ms(ms) usleep((ms)*1000)
 #endif
+
+
+// RENDER
+#define PIXEL_SIZE 4
+#define DELAY 200
 
 #endif

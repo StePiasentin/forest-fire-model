@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <SDL.h>
 #include "config.h"
 
 // starts the forest with a causal pattern
@@ -14,9 +15,18 @@ void init_grid(int *grid)
 // updates grid state
 void update_grid(const int *current, int *next)
 {
-    //(x-1,y-1) (x, y-1) (x+1,y-1)
-    //(x-1,y)   (x, y)   (x+1,y)
-    //(x-1,y+1) (x, y+1) (x+1,y+1)
+    // current is T forest
+    // next is T+1 forest
+
+    /*
+    Schema of coordinates to check in the forest:
+        (x-1, y-1)  (x, y-1)  (x+1, y-1)
+
+        (x-1,   y)   (x, y)   (x+1,   y)
+
+        (x-1, y+1)  (x, y+1)  (x+1, y+1)    
+    */
+
     for (int i = 0; i < WIDTH * HEIGHT; i++)
     {
         switch (current[i])
@@ -57,10 +67,12 @@ int is_neighbor_on_fire(const int *current, int current_i, int x_to_check, int y
     if (!FOREST_MARGIN_1D_CHECK(COORDINATES_TO_INDEX(x_to_check, y_to_check)))
         return 0;
 
-    // blocking horizontal wrap-around:
-    // conditions:
-    // x ∈ [cx - 1, cx + 1]
-    // y ∈ [cy - 1, cy + 1]
+        /*
+            blocking horizontal wrap-around.
+            conditions to satisfy:
+            x ∈ [cx - 1, cx + 1]
+            y ∈ [cy - 1, cy + 1]
+        */
 
     if (x_to_check < GET_X(current_i) - 1 ||
         x_to_check > GET_X(current_i) + 1 ||
@@ -73,43 +85,73 @@ int is_neighbor_on_fire(const int *current, int current_i, int x_to_check, int y
 }
 
 // grid rendering logic
+
 void render_grid(const int *grid)
 {
-    static HANDLE hConsole = NULL;
-    if (!hConsole)
-        hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    static SDL_Window *window = NULL;
+    static SDL_Renderer *renderer = NULL;
+    static int initialized = 0;
 
-    system("cls");
-    printf("\x1b[H"); // Move cursor to top-left
-
-    for (int i = 0; i < WIDTH * HEIGHT; i++)
+    if (!initialized)
     {
-        switch (grid[i])
-        {
-        case EMPTY:
-            SetConsoleTextAttribute(hConsole, 0); // Nero (vuoto)
-            putchar(' ');
-            break;
-
-        case TREE:
-            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Verde brillante
-            putchar('#');
-            break;
-
-        case FIRE:
-            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY); // Rosso brillante
-            putchar('*');
-            break;
+        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+            SDL_Log("SDL_Init Error: %s", SDL_GetError());
+            return; // SDL is needed, return if not loaded
         }
 
-        if ((i + 1) % WIDTH == 0)
-            putchar('\n');
+        window = SDL_CreateWindow("Forest Fire",
+                                  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                  WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE,
+                                  SDL_WINDOW_SHOWN);
+        if (!window) {
+            SDL_Log("SDL_CreateWindow Error: %s", SDL_GetError());
+            SDL_Quit();
+            return;
+        }
+
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        if (!renderer) {
+            SDL_Log("SDL_CreateRenderer Error: %s", SDL_GetError());
+            SDL_DestroyWindow(window);
+            SDL_Quit();
+            return;
+        }
+
+        initialized = 1;
     }
 
-    // Reset color a default bianco su nero
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    // Cleaning the screen
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
 
-    fflush(stdout);
+    // Painting cells with proper color
+    for (int y = 0; y < HEIGHT; y++)
+    {
+        for (int x = 0; x < WIDTH; x++)
+        {
+            SDL_Rect rect = {x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE};
+            int cell = grid[y * WIDTH + x];
+
+            switch (cell)
+            {
+                case EMPTY:
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
+                    break;
+                case TREE:
+                    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // green
+                    break;
+                case FIRE:
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
+                    break;
+                default:
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                    break;
+            }
+            SDL_RenderFillRect(renderer, &rect);
+        }
+    }
+
+    SDL_RenderPresent(renderer);
 }
 
 // frame delay (needed?)
