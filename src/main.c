@@ -24,7 +24,7 @@ int main()
 
     while (!quit)
     {
-        // Gestione eventi
+        // Events handling
         while (SDL_PollEvent(&e))
         {
             if (e.type == SDL_QUIT)
@@ -39,10 +39,10 @@ int main()
         current = next;
         next = temp;
 
-        SDL_Delay(DELAY); // delay per circa 10 fps
+        SDL_Delay(DELAY); // delay
     }
 
-    // Pulizia SDL (se non fatta in render_grid)
+    // Cleaning SDL
     SDL_Quit();
 
     return 0;
