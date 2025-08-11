@@ -1,7 +1,8 @@
-# 🌲 Forest Fire Model
+# 🌲|🔥 Forest Fire Model
 
-A simple C implementation of the **Forest Fire cellular automaton model** using **SDL2** for visualization.
+A simple C implementation of the **Forest Fire cellular automaton model** using **SDL2** library for visualization in Windows.
 
+ref: en.wikipedia.org/wiki/Forest-fire_model
 ---
 
 ## 🧰 Requirements
