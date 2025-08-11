@@ -135,10 +135,10 @@ void render_grid(const int *grid)
             switch (cell)
             {
                 case EMPTY:
-                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
+                    SDL_SetRenderDrawColor(renderer, 65, 34, 6, 255); // brown
                     break;
                 case TREE:
-                    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // green
+                    SDL_SetRenderDrawColor(renderer, 13, 135, 71, 255); // green
                     break;
                 case FIRE:
                     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red

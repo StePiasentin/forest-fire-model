@@ -21,7 +21,7 @@ Launch `x64 Native Tools Command Prompt for VS`
 ### 2. Move to the project directory
 
 ```
-cd C:\Users\stefanopi\Progetti\personal\forest-fire-model\src
+cd C:\<YOUR_PATH>\forest-fire-model\src
 ```
 ### 3. Compile
 ```
