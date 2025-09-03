@@ -5,7 +5,7 @@ A simple C implementation of the **Forest Fire cellular automaton model** using 
 ref: en.wikipedia.org/wiki/Forest-fire_model
 ---
 
-## 🧰 Requirements
+## Requirements
 
 - [SDL2 2.0.22 (VC)](https://github.com/libsdl-org/SDL/releases/download/release-2.0.22/SDL2-devel-2.0.22-VC.zip)
 - Windows
@@ -13,7 +13,7 @@ ref: en.wikipedia.org/wiki/Forest-fire_model
 
 ---
 
-## 🧭 How to Run
+## How to Run
 
 ### 1. Use the proper CLI
 
@@ -40,7 +40,7 @@ main.exe
 
 ---
 
-### 📂 Project Structure
+### Project Structure
 ```
 forest-fire-model/
 ├── SDL2-2.0.22/          # SDL2 (not tracked in Git)
@@ -56,5 +56,5 @@ forest-fire-model/
 
 ---
 
-### 📸 Preview
-(Add a screenshot or GIF here to show how the simulation looks!)
+### Preview
+(todo: Add a screenshot or GIF here to show how the simulation looks!)
